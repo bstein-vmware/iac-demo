@@ -68,7 +68,7 @@ spec:
       machineDeployments:
         - class: node-pool
           name: vks-cl01-np-n17i
-          replicas: 1
+          replicas: 2
           metadata:
             annotations:
               run.tanzu.vmware.com/resolve-os-image: os-name=photon
