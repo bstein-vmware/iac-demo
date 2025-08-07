@@ -14,7 +14,7 @@ spec:
     serviceDomain: cluster.local
   topology:
     class: builtin-generic-v3.3.0
-    version: v1.32.3---vmware.1-fips-vkr.2
+    version: 1.28.8+vmware.1-fips.1
     variables:
       - name: vsphereOptions
         value:
