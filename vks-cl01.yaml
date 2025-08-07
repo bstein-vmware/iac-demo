@@ -1,0 +1,82 @@
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  name: vks-cl02
+  namespace: ns01
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+        - 192.168.156.0/20
+    services:
+      cidrBlocks:
+        - 10.96.0.0/12
+    serviceDomain: cluster.local
+  topology:
+    class: builtin-generic-v3.3.0
+    version: v1.32.3---vmware.1-fips-vkr.2
+    variables:
+      - name: vsphereOptions
+        value:
+          persistentVolumes:
+            availableStorageClasses:
+              - vks-storage-policy
+            defaultStorageClass: vks-storage-policy
+      - name: kubernetes
+        value:
+          certificateRotation:
+            enabled: true
+            renewalDaysBeforeExpiry: 90
+      - name: osConfiguration
+        value:
+          ntp:
+            servers:
+              - 10.0.0.221
+          trust:
+            additionalTrustedCAs:
+              - caCert:
+                  content: >-
+                    -----BEGIN CERTIFICATE-----
+                    MIIDKDCCAhCgAwIBAgIQXrF9tqku6b9mBI+JNN+ZuTANBgkqhkiG9w0BAQsFADAU
+                    MRIwEAYDVQQDEwlIYXJib3IgQ0EwHhcNMjUwODA0MjAzMTUyWhcNMzUwODAyMjAz
+                    MTUyWjAUMRIwEAYDVQQDEwlIYXJib3IgQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IB
+                    DwAwggEKAoIBAQDKSO59QzobF51U2iLvRrN/FhZgJx3T16lQ9YexG5xM3bn4KLWC
+                    H6aWbCLnPN6pz2VGYBVBQFSYRho2Vpext3JJQ3Gt6fJpq32KVG0m2tZvUzlBO4Mq
+                    RALvLpbYC1CLiBkkqEAHzZzqJQ6MdRS3FKFNq3gmZkczE8hewPdZdWS7dN4F7GZ0
+                    NR7frm/mXtK7TI+sPeaXAKWsC+pCIRprenQnUjSgyIxHKASP40wr1Y+4E3z1owJ6
+                    QpbJqzeFGbB5N3vClw9K6TUk70I+koy4I0LhJSPvY7ZK6eRHZBQ/6qr5DGhjb88h
+                    AlbNco2eMik2HjGOXhvY9TgH4+IcJKjilNZRAgMBAAGjdjB0MA4GA1UdDwEB/wQE
+                    AwICBDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDwYDVR0TAQH/BAUw
+                    AwEB/zAdBgNVHQ4EFgQU2gJ3wdzPtVisr2mnZoV43uyPeEAwEwYDVR0RBAwwCoII
+                    aGFyYm9yY2EwDQYJKoZIhvcNAQELBQADggEBAJybXQk9uLPs2Aqz/Wl3hyld9slI
+                    MDhTYW/zrA+tTVcCPW29p/0Sx9Y6i/UjnWnfPbhkUlJuCQnyC/gsfA3HLQYIDtkU
+                    +KqrX0wGlD51jOMQ/5fivyUl9r/tBgamZiUm6/aTSIiBsOes5vhdQRaugx5XA1GF
+                    q/d0W8GiM7LiLfmeTqdjxh/72mbLuOcE22NxNp15zOTVY0kEfOtL2FcDY4LTy8N1
+                    CzqA7wrW6PGM74jf5o1YRTgugH93gJm0GXf3x7KtXwuJqwlHVgrf13F+jBGHPiv3
+                    Pc1UL87lStD0+Ge8EIgpxJgpsjiyvjlr3cf1DP5jljM0MNtIiLdQpyaUREo=
+                    -----END CERTIFICATE-----
+      - name: vmClass
+        value: guaranteed-small
+      - name: storageClass
+        value: vks-storage-policy
+    controlPlane:
+      replicas: 1
+      metadata:
+        annotations:
+          run.tanzu.vmware.com/resolve-os-image: os-name=photon
+    workers:
+      machineDeployments:
+        - class: node-pool
+          name: vks-cl01-np-n17i
+          replicas: 1
+          metadata:
+            annotations:
+              run.tanzu.vmware.com/resolve-os-image: os-name=photon
+          variables:
+            overrides:
+              - name: volumes
+                value:
+                  - name: vol-ld1g
+                    mountPath: /var/lib/containerd
+                    storageClass: vks-storage-policy
+                    capacity: 20Gi
