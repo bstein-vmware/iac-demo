@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: container-app
   namespace: argocd-instance-1 # Namespace where the Argo CD Application resource lives
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default # Refers to an existing AppProject
   source:
