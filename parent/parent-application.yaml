@@ -2,7 +2,9 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: parent-app
-  namespace: argocd-instance-1 # Namespace where the Argo CD Application resource lives
+  namespace: argocd # Namespace where the Argo CD Application resource lives
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default # Refers to an existing AppProject
   source:
@@ -13,7 +15,7 @@ spec:
       recurse: true
   destination:
     server: https://10.1.0.2:443 # URL of the target Kubernetes cluster
-    namespace: demo-namespace-vkrcg # Namespace where the application will be deployed
+    namespace: argocd # Namespace where the application will be deployed
   syncPolicy:
     automated:
       prune: true # Automatically prune resources that are no longer in Git
