@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  generation: 1
+  labels:
+    app: webserver-docker
+  name: webserver-docker
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webserver-docker
+  template:
+    metadata:
+      labels:
+        app: webserver-docker
+    spec:
+      containers:
+      - image: harbor.site-a.vcf.lab/library/webserver-docker:demo3
+        imagePullPolicy: IfNotPresent
+        name: webserver-docker
+      restartPolicy: Always
