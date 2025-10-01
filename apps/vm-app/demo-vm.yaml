@@ -1,0 +1,30 @@
+apiVersion: vmoperator.vmware.com/v1alpha3
+kind: VirtualMachine
+metadata:
+  name: demo-vm
+  namespace: argocd
+  labels:
+    vm-selector: demo-vm
+    demo-vm-lb: vm-lb-selector
+    topology.kubernetes.io/zone: z-wld-a
+spec:
+  className: best-effort-small
+  # Friendly image name: Ubuntu 22.04
+  imageName: vmi-4376698549fa77811
+  storageClass: vks-storage-policy
+  powerState: PoweredOn
+  network:
+    hostName: demo-vm
+    domainName: site-a.vcf.lab
+  bootstrap:
+    cloudInit:
+      cloudConfig:
+        defaultUserEnabled: true
+        ssh_pwauth: true
+        users:
+          - name: demo
+            passwd:
+              name: demo-vm-bootstrap-secret
+              key: demo-passwd
+            lock_passwd: false
+            sudo: ALL=(ALL) NOPASSWD:ALL
