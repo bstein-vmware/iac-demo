@@ -20,5 +20,6 @@ spec:
     automated:
       prune: true # Automatically prune resources that are no longer in Git
       selfHeal: true # Automatically sync out-of-sync resources
+      allowEmpty: true
 #    syncOptions:
 #      - CreateNamespace=true # Create the target namespace if it doesn't exist
