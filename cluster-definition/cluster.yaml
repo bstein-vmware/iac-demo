@@ -41,7 +41,7 @@ spec:
       machineDeployments:
         - class: node-pool
           name: demo-np-rb30
-          replicas: 3
+          replicas: 4
           metadata:
             annotations:
               run.tanzu.vmware.com/resolve-os-image: os-name=photon, content-library=cl-5e990aa753a07bc9e
