@@ -1,8 +1,8 @@
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
 metadata:
-  name: demo-cluster
-  namespace: argocd
+  name: test-cluster
+  namespace: argo-instance-ns
 spec:
   clusterNetwork:
     pods:
