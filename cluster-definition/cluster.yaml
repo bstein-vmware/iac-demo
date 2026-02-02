@@ -36,7 +36,7 @@ spec:
       replicas: 1
       metadata:
         annotations:
-          run.tanzu.vmware.com/resolve-os-image: os-name=photon, content-library=cl-5e990aa753a07bc9e
+          run.tanzu.vmware.com/resolve-os-image: os-name=photon
     workers:
       machineDeployments:
         - class: node-pool
@@ -44,4 +44,4 @@ spec:
           replicas: 1
           metadata:
             annotations:
-              run.tanzu.vmware.com/resolve-os-image: os-name=photon, content-library=cl-5e990aa753a07bc9e
+              run.tanzu.vmware.com/resolve-os-image: os-name=photon
